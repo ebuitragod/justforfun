@@ -13,9 +13,9 @@
         pip install django
 1. Poner el servidor al servicio
         python manage.py runserver
-        http://127.0.0.1:8000/
                             /admin
                             /signup
+Salir del servidor: ctrl+c
 2.  Para hacer pruebas
         python manage.py shell
             from django.contrib.auth.models import User

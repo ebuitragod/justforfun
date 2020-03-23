@@ -8,6 +8,7 @@
     <h1>My Site</h1>
     <a href="{% url 'home'%}">Home</a> /
     {% if user.is_authenticated %}
+        <a href="{% url 'password_change'}">Change password</a> /
         <a href="{% url 'logout' %}">Log out</a> /
         <strong>You are logged in as {{ user.username }}</strong>
 
