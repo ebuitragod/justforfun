@@ -22,7 +22,20 @@ Salir del servidor: ctrl+c
             User.objects.count()
             u=User.objects.first()
             u.username
+            #Revisemos el email que esté asociado al usuario
+            u = User.objects.get(username='espe1') 
+            #Mmmm mejor asignémosle uno
+            u.email = 'espe1@example.com'
+            u.save  
             exit()
-3.
-4.
+3. URLS 
+        /accounts/login/
+        accounts/password_reset/
+        /password_change/
+        /secret/
+        /secretitos/
+
+4. Para las vistas dentro de login:
+        Hay dos mecanismos que se pueden ver en las urls /secret + /secretitos. 
+        El mecanismo recomendado es /secret:  es straightforward: se crea la función en views.py y luego la url en url.py, basado en la página que se quiera enviar (ver ejemplo con el html). 
 
