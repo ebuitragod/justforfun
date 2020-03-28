@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.views.generic import TemplateView
+from core.forms import SignUpForm
 
 
 
@@ -19,17 +20,17 @@ def home(request):
     
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-            identification = form.cleaned_data.get('identification') #Espe
+            identification = form.cleaned_data.get('identification') #FUNCIONA!!!!
             user = authenticate(username=username, password=raw_password, identification=identification)
             login(request, user)
             return redirect('home')
     else:
-        form = UserCreationForm()
+        form = Sign()
     return render(request, 'registration/signup.html', {'form': form})
 
 @login_required(redirect_field_name='justforMagic')
