@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
+from django.views.generic import TemplateView
+
 
 
 # Create your views here.
@@ -19,13 +21,16 @@ def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            identification = form.cleaned_data.get('identification') #Espe
+            user = authenticate(username=username, password=raw_password, identification=identification)
+            login(request, user)
             return redirect('home')
     else:
         form = UserCreationForm()
-    return render(request, 'registration/signup.html', {
-        'form': form
-    })
+    return render(request, 'registration/signup.html', {'form': form})
 
 @login_required(redirect_field_name='justforMagic')
 # To decorate the views that we want to protect
