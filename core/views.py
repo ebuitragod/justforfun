@@ -30,7 +30,7 @@ def signup(request):
             login(request, user)
             return redirect('home')
     else:
-        form = Sign()
+        form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
 
 @login_required(redirect_field_name='justforMagic')
