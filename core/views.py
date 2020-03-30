@@ -30,7 +30,7 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False #Espe
+            user.is_active = False #Espe - So the user can't login without email confirmation
             user.save()
             current_site = get_current_site(request)
             mail_subject = 'Activate your JustForMagic account'
@@ -45,10 +45,27 @@ def signup(request):
                 mail_subject, message, to=[to_email]
             )
             email.send()
-            return HttpResponse('Pleas confirm your email address to complete your registration')
+            return HttpResponse('Please confirm your email address to complete your registration')
         else:
             form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        #return redirecto to ('home')
+        return HttpResponse('Thank you for your email confimation . Now you can login with your account')
+    else:
+        return HttpResponse('Activation link is invalid. Check again.')
+
+
 
 @login_required(redirect_field_name='justforMagic')
 # To decorate the views that we want to protect
